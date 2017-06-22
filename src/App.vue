@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import 'iview/dist/styles/iview.css'; 
 export default {
   name: 'app'
 }

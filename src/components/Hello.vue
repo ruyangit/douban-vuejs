@@ -40,7 +40,7 @@
       <h2>User-defined</h2>
       <ul>
         <li>
-          <a href="http://router.vuejs.org/" target="_blank">cnode.jd</a>
+          <router-link to="/nodejs">cnode.js</router-link>
         </li>
       </ul>
     </div>
