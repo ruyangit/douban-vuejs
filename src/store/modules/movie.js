@@ -7,7 +7,7 @@ const state = {
         start: 0,
         total: 0,
         title: '',
-        method: 'in_theaters',
+        method: '',
         path: ''
     }
 }
@@ -15,17 +15,11 @@ const state = {
 const actions = {
     async['getMovieList']({ commit, state, rootState: { global, route: { fullPath } } }, config) {
         const path = fullPath
-        // console.log(state.inTheaters.subjects.length);
-        // console.log(state.inTheaters.path);
-        // console.log(path);
-        // console.log(config.start);
-        // if (state.inTheaters.subjects.length > 0 && path === state.inTheaters.path && config.start === 0) {
+        // if (state.lists.data.length > 0 && path === state.lists.path && config.start === 0) {
         //     global.progress = 100
         //     return
         // }
-        const { data } = await api.get('/v2/movie/'+ state.lists.method, { ...config})
-        console.log(data);
-        // console.log(path);
+        const { data } = await api.get('/v2/movie/' + config.method, { ...config })
         if (data) {
             commit('receiveMovieList', {
                 ...config,
@@ -38,14 +32,27 @@ const actions = {
 }
 
 const mutations = {
-    ['receiveMovieList'](state, { subjects, count, start, total, title, path }) {
+    ['receiveMovieList'](state, { subjects, count, start, total, title, path, method}) {
+        subjects.map(data => {
+            // console.log(data);
+            if (data.rating) {
+                let average = data.rating.average
+                data.rating.full = average / 2
+                // data.half = average % 2 === 0 ? 0 : 1
+                // console.log(data.half);
+                //this.gray = 5 - this.full - this.half
+            }
+        })
+
         if (start === 0) {
             subjects = [].concat(subjects)
         } else {
             subjects = state.lists.data.concat(subjects)
         }
+
+
         state.lists = {
-            data: subjects, count, start, total, title, path
+            data: subjects, count, start, total, title, path, method
         }
     }
 }

@@ -26,7 +26,7 @@ export default {
       }
     },
     'global.messageConfig'(config) {
-      console.log(config);
+      // console.log(config);
       if (typeof config === 'string') {
         if('destroy'==config){
           this.$Message.destroy();

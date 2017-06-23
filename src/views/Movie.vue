@@ -1,14 +1,14 @@
 <template>
     <Row>
         <i-col span="4">
-            <Menu width="auto">
+            <Menu width="auto" @on-select="handleSelect">
                 <Menu-group title="电影">
-                    <Menu-item name="1-1" @click="movieCategory('in_theaters')">正在热映</Menu-item>
-                    <Menu-item name="1-2" @click="movieCategory('coming_soon')">即将上映</Menu-item>
-                    <Menu-item name="1-3">Top250</Menu-item>
-                    <Menu-item name="1-4">口碑榜</Menu-item>
-                    <Menu-item name="1-5">北美票房榜</Menu-item>
-                    <Menu-item name="1-6">新片榜</Menu-item>
+                    <Menu-item name="in_theaters">正在热映</Menu-item>
+                    <Menu-item name="coming_soon">即将上映</Menu-item>
+                    <Menu-item name="top250">Top250</Menu-item>
+                    <!--<Menu-item name="weekly">口碑榜</Menu-item>
+                    <Menu-item name="us_box">北美票房榜</Menu-item>
+                    <Menu-item name="new_movies">新片榜</Menu-item>-->
                 </Menu-group>
             </Menu>
         </i-col>
@@ -16,13 +16,29 @@
             <div class="wrapper-content">
                 <article>
                     <Row :gutter="16">
-                        <i-col span="6" v-for="item in topics.data" :key="item.id">
+                        <i-col span="6" v-for="(item,index) in topics.data" :key="item.id">
                             <Card class="mb15">
                                 <p slot="title" v-text="item.title"></p>
-                                <img :src="item.images.small"></img>
+                                <p slot="title">
+                                    <Rate v-if="item.rating" show-text v-model="item.rating.full" disabled>
+                                        <span style="color: #f5a623">{{ item.rating.average }}</span>
+                                    </Rate>
+                                </p>
+                                <!--<p slot="title" v-text="item.original_title"></p>-->
+                                <Row>
+                                    <i-col span="12" align="middle" justify="center">
+                                        <img v-if="item.images" :src="item.images.small" alt=""></img>
+                                    </i-col>
+                                    <i-col span="12">
+                                        <p v-if="item.directors">导演：{{item.directors[0].name}}</p>
+                                        <p v-if="item.year">年代：{{item.year}}</p>
+                                    </i-col>
+                                </Row>
+    
                             </Card>
                         </i-col>
                     </Row>
+                    <a @click="loadMore()" href="javascript:;">更多</a>
                 </article>
             </div>
         </i-col>
@@ -51,27 +67,14 @@ export default {
         }
     },
     async mounted() {
-        //正在上映
-        fetchInitialData(this.$store)
-
-        
-        // this.$store.dispatch('global/type', 'info')
-        // this.$store.dispatch('global/gMessage', {type:'loading',content:'正在加载中...',duration: 0})
-        //  this.$store.dispatch('global/gMessage',"随便发个消息")
-
-        // 
+        fetchInitialData(this.$store,{start:0,method:'in_theaters'})
     },
-    // watch: {
-    //     '$route'() {
-    //         fetchInitialData(this.$store)
-    //     }
-    // },
     methods: {
-        movieCategory(category) {
-            // console.log(this.$store.method);
-            console.log(category);
-            // fetchInitialData(this.$store,{start: 0 ,method: category})
-            // fetchInitialData(this.$store, {page})
+        handleSelect(type) {
+            fetchInitialData(this.$store,{method:type});
+        },
+        loadMore(start=this.topics.data.length) {
+            fetchInitialData(this.$store,{ start,method:this.topics.method });
         }
     }
 }
