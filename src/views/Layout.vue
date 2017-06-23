@@ -11,18 +11,18 @@
         <div class="layout-header">
             <div class="layout-logo"></div>
         </div>
-        <div>
+        <div class="layout-content">
             <router-view :key="key"></router-view>
         </div>
         <div class="layout-copy">
-            2011-2016 &copy; TalkingData
+            2016-2017 &copy; Douban data
         </div>
         <Back-top></Back-top>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import api from '@api'
 export default {
     data() {
         return {
@@ -34,43 +34,23 @@ export default {
             return this.$route.path.replace(/\//g, '_')
         },
     },
-    metaInfo() {
-        return {
-            title: 'nodejs'
-        }
-    },
+    // metaInfo() {
+    //     return {
+    //         title: 'nodejs'
+    //     }
+    // },
     async mounted() {
-        await axios({
-            method: 'get',
-            url: '/v2/movie/in_theaters?count=8',
-            // params: {
-            //     categoryId: 1,
-            //     pageNo: 1,
-            //     pageSize: 30
-            // },
-            timeout: 30000
-            // headers: {
-            //     'X-Requested-With': 'XMLHttpRequest'
-            // }
-        }).then(function (response) {
-            console.log('response')
-            console.log(response)
-        }).catch(function (err) {
-            console.log('err')
-            console.log(err)
-        })
-        // api.get('topics', {page: 1})
-        // if (success) this.list = data
+        // await api.get('/v2/movie/in_theaters?count=8')
     }
 }
 </script>
 
 <style scoped>
 .layout {
-    border: 1px solid #d7dde4;
+    /*border: 1px solid #d7dde4;*/
     background: #f5f7f9;
     position: relative;
-    border-radius: 4px;
+    /*border-radius: 3px;*/
     overflow: hidden;
 }
 
@@ -110,5 +90,13 @@ export default {
 
 .layout-ceiling-main a {
     color: #9ba7b5;
+}
+
+.layout-content {
+    min-height: 350px;
+    margin: 15px;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 4px;
 }
 </style>
