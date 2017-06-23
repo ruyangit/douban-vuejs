@@ -22,8 +22,13 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 export default {
+    data() {
+        return {
+            list: []
+        }
+    },
     computed: {
         key() {
             return this.$route.path.replace(/\//g, '_')
@@ -31,10 +36,32 @@ export default {
     },
     metaInfo() {
         return {
-            title: 'nodejs' 
+            title: 'nodejs'
         }
+    },
+    async mounted() {
+        await axios({
+            method: 'get',
+            url: '/v2/movie/in_theaters?count=8',
+            // params: {
+            //     categoryId: 1,
+            //     pageNo: 1,
+            //     pageSize: 30
+            // },
+            timeout: 30000
+            // headers: {
+            //     'X-Requested-With': 'XMLHttpRequest'
+            // }
+        }).then(function (response) {
+            console.log('response')
+            console.log(response)
+        }).catch(function (err) {
+            console.log('err')
+            console.log(err)
+        })
+        // api.get('topics', {page: 1})
+        // if (success) this.list = data
     }
-
 }
 </script>
 
