@@ -32,7 +32,7 @@ function checkStatus(response) {
 }
 
 function checkCode(res) {
-    console.log(res);
+    // console.log(res);
     if (res.data.code === -500) {
         // window.location.href = '/backend'
     } else if (res.data.code === -400) {

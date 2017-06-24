@@ -15,10 +15,16 @@ const state = {
 const actions = {
     async['getMovieList']({ commit, state, rootState: { global, route: { fullPath } } }, config) {
         const path = fullPath
-        // if (state.lists.data.length > 0 && path === state.lists.path && config.start === 0) {
-        //     global.progress = 100
-        //     return
-        // }
+        // console.log(config.method);
+        // console.log(state.lists.method);
+        // console.log(config.start );
+        // console.log(state.lists.data.length );
+
+        if (state.lists.data.length > 0 && config.method === state.lists.method && config.start === 0) {
+            global.progress = 100
+            return
+        }
+
         const { data } = await api.get('/v2/movie/' + config.method, { ...config })
         if (data) {
             commit('receiveMovieList', {
@@ -32,7 +38,7 @@ const actions = {
 }
 
 const mutations = {
-    ['receiveMovieList'](state, { subjects, count, start, total, title, path, method}) {
+    ['receiveMovieList'](state, { subjects, count, start, total, title, path, method }) {
         subjects.map(data => {
             // console.log(data);
             if (data.rating) {

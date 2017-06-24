@@ -7,8 +7,8 @@
                     <Menu-item name="coming_soon">即将上映</Menu-item>
                     <Menu-item name="top250">Top250</Menu-item>
                     <!--<Menu-item name="weekly">口碑榜</Menu-item>
-                    <Menu-item name="us_box">北美票房榜</Menu-item>
-                    <Menu-item name="new_movies">新片榜</Menu-item>-->
+                        <Menu-item name="us_box">北美票房榜</Menu-item>
+                        <Menu-item name="new_movies">新片榜</Menu-item>-->
                 </Menu-group>
             </Menu>
         </i-col>
@@ -38,7 +38,8 @@
                             </Card>
                         </i-col>
                     </Row>
-                    <a @click="loadMore()" href="javascript:;">更多</a>
+                    <a v-if="topics.total!=topics.data.length" @click="loadMore()" href="javascript:;">查看更多</a>
+                    <!--<a v-else href="javascript:;">没有更多了</a>-->
                 </article>
             </div>
         </i-col>
@@ -67,15 +68,25 @@ export default {
         }
     },
     async mounted() {
-        fetchInitialData(this.$store,{start:0,method:'in_theaters'})
+        fetchInitialData(this.$store, { start: 0, method: 'in_theaters' })
     },
     methods: {
         handleSelect(type) {
-            fetchInitialData(this.$store,{method:type});
+            fetchInitialData(this.$store, { start: 0, method: type });
         },
-        loadMore(start=this.topics.data.length) {
-            fetchInitialData(this.$store,{ start,method:this.topics.method });
+        loadMore(start = this.topics.data.length) {
+            fetchInitialData(this.$store, { start, method: this.topics.method });
         }
+    },
+    watch: {
+        // 'topics.data': {
+        //     handler: (val, oldVal) => {
+        //         // console.log(val);
+        //         // console.log(oldVal);
+        //     },
+        //     // 深度观察
+        //     deep: true
+        // }
     }
 }
 </script>
