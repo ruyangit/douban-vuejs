@@ -2,6 +2,10 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../store'
 
+import {
+	baseUrl
+} from './env'
+
 axios.interceptors.request.use(config => {
     store.dispatch('global/gProgress', 0)
     store.dispatch('global/gMessage', { type: 'loading', content: '正在加载中...', duration: 0 })
@@ -42,7 +46,7 @@ export default {
     post(url, data) {
         return axios({
             method: 'post',
-            url: url,
+            url: baseUrl+url,
             data: qs.stringify(data),
             timeout: 30000,
             headers: {
@@ -54,7 +58,7 @@ export default {
     get(url, params) {
         return axios({
             method: 'get',
-            url: url,
+            url: baseUrl+url,
             params,
             timeout: 30000,
             headers: {
