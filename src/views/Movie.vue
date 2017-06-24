@@ -1,7 +1,7 @@
 <template>
     <Row>
         <i-col span="4">
-            <Menu width="auto" @on-select="handleSelect">
+            <Menu width="auto" @on-select="handleSelect" active-name="in_theaters">
                 <Menu-group title="电影">
                     <Menu-item name="in_theaters">正在热映</Menu-item>
                     <Menu-item name="coming_soon">即将上映</Menu-item>
@@ -51,7 +51,7 @@ import { mapGetters } from 'vuex'
 
 const fetchInitialData = async (store, config = { start: 0 }) => {
     const { path } = store.state.route
-    const base = { ...config, city: '上海', count: 10 }
+    const base = { ...config, city: '上海', count: 15 }
     await store.dispatch('douban/movie/getMovieList', base)
 }
 export default {

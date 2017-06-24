@@ -2,11 +2,9 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../store'
 
-// store.dispatch('global/message', 'info', {content:'这是一个内容'})
-
 axios.interceptors.request.use(config => {
     store.dispatch('global/gProgress', 0)
-    store.dispatch('global/gMessage', {type:'loading',content:'正在加载中...',duration: 0})
+    store.dispatch('global/gMessage', { type: 'loading', content: '正在加载中...', duration: 0 })
     return config
 }, error => {
     return Promise.reject(error)
@@ -16,9 +14,8 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 
 function checkStatus(response) {
     store.dispatch('global/gProgress', 100)
-    store.dispatch('global/gMessage','destroy');
-    
-    // console.log(response);
+    store.dispatch('global/gMessage', 'destroy');
+
     if (response.status === 200 || response.status === 304) {
         return response
     }
@@ -32,13 +29,11 @@ function checkStatus(response) {
 }
 
 function checkCode(res) {
-    // console.log(res);
-    if (res.data.code === -500) {
-        // window.location.href = '/backend'
-    } else if (res.data.code === -400) {
-        // window.location.href = '/'
-    } else if (res.data.code !== 200) {
-        // store.dispatch('global/showMsg', res.data.message)
+    if (res.data.code) {
+        //状态码全局处理器块
+        if (res.data.code !== 200) {
+            store.dispatch('global/gMessage', { type: 'error', content: res.data.message, duration: 0, closable: true })
+        }
     }
     return res
 }
