@@ -3,11 +3,12 @@ import qs from 'qs'
 import store from '../store'
 
 import {
-	baseUrl
+    baseUrl
 } from './env'
 
 axios.interceptors.request.use(config => {
     store.dispatch('global/gProgress', 0)
+    store.dispatch('global/gMessage', 'destroy')
     store.dispatch('global/gMessage', { type: 'loading', content: '正在加载中...', duration: 0 })
     return config
 }, error => {
@@ -18,10 +19,19 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 
 function checkStatus(response) {
     store.dispatch('global/gProgress', 100)
-    store.dispatch('global/gMessage', 'destroy');
-
-    if (response.status === 200 || response.status === 304) {
-        return response
+    store.dispatch('global/gMessage', 'destroy')
+    if (response) {
+        if (response.status === 200 || response.status === 304) {
+            return response
+        }
+    } else {
+        return {
+            data: {
+                code: 400,
+                message: '服务器拒绝请求',
+                data: ''
+            }
+        }
     }
     return {
         data: {
@@ -46,7 +56,7 @@ export default {
     post(url, data) {
         return axios({
             method: 'post',
-            url: baseUrl+url,
+            url: baseUrl + url,
             data: qs.stringify(data),
             timeout: 30000,
             headers: {
@@ -58,7 +68,7 @@ export default {
     get(url, params) {
         return axios({
             method: 'get',
-            url: baseUrl+url,
+            url: baseUrl + url,
             params,
             timeout: 30000,
             headers: {

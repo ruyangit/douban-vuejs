@@ -26,7 +26,8 @@ const actions = {
         }
 
         const { data } = await api.get('/v2/movie/' + config.method, { ...config })
-        if (data) {
+        if (data){
+            if(data.code)return
             commit('receiveMovieList', {
                 ...config,
                 ...data,
@@ -39,11 +40,11 @@ const actions = {
 
 const mutations = {
     ['receiveMovieList'](state, { subjects, count, start, total, title, path, method }) {
-        subjects.map(data => {
+        subjects.map(e => {
             // console.log(data);
-            if (data.rating) {
-                let average = data.rating.average
-                data.rating.full = average / 2
+            if (e.rating) {
+                let average = e.rating.average
+                e.rating.full = average / 2
                 // data.half = average % 2 === 0 ? 0 : 1
                 // console.log(data.half);
                 //this.gray = 5 - this.full - this.half

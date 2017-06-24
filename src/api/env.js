@@ -13,9 +13,9 @@ let imgBaseUrl = '';
 
 
 if (process.env.NODE_ENV == 'development') {
-
+	baseUrl = 'https://api.douban.com';
 }else if(process.env.NODE_ENV == 'production'){
-	baseUrl = 'https://api.douban.com/v2';
+	baseUrl = 'https://api.douban.com';
 }
 
 export {
