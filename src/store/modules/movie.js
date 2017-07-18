@@ -26,6 +26,7 @@ const actions = {
         }
 
         const { data } = await api.get('/v2/movie/' + config.method, { ...config })
+        console.log(data)
         if (data){
             if(data.code)return
             commit('receiveMovieList', {

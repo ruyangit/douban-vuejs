@@ -5,9 +5,7 @@
 
 <script>
 import 'iview/dist/styles/iview.css';
-import {
-  mapGetters
-} from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   name: 'app',
   computed: {
@@ -28,9 +26,9 @@ export default {
     'global.messageConfig'(config) {
       // this.$Message.destroy();
       if (typeof config === 'string') {
-        if('destroy'==config){
+        if ('destroy' == config) {
           this.$Message.destroy();
-        }else{
+        } else {
           this.$Message.info(config);
         }
       } else if (config) {
