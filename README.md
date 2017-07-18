@@ -1,4 +1,4 @@
-# fomoney-vuejs
+# douban-vuejs
 
 > A Vue.js project
 
